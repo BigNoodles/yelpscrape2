@@ -3,11 +3,13 @@ Tools for webscraping using Selenium
 """
 
 #imports
+import logging
+
 from selenium.webdriver import Firefox
 from selenium.webdriver.firefox.options import Options
+from selenium.common.exceptions import WebDriverException
 
 #setup logging
-import logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
@@ -37,8 +39,8 @@ class ScrapeTool():
             browser.get(next_url)
             self.is_open = True
             return browser
-        except Exception as e:
-            logger.error(f'Error retrieving {next_url}: {e}')
+        except WebDriverException as ex:
+            logger.error(f' Error retrieving {next_url}: {ex}')
             return None
 
 
@@ -55,7 +57,6 @@ class ScrapeTool():
             browser.quit()
             self.is_open = False
             return True
-        except Exception as e:
-            logger.error(f'Error closing webdriver: {e}')
+        except WebDriverException as ex:
+            logger.error(f' Error closing webdriver: {ex}')
             return False
-
